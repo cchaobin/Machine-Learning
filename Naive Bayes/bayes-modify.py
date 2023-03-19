@@ -87,22 +87,27 @@ Blog:
 Modify:
 	2017-08-12
 """
-def trainNB0(trainMatrix,trainCategory):
-    numTrainDocs = len(trainMatrix)							#计算训练的文档数目
-    numWords = len(trainMatrix[0])							#计算每篇文档的词条数
-    pAbusive = sum(trainCategory)/float(numTrainDocs)		#文档属于侮辱类的概率
-    p0Num = np.ones(numWords); p1Num = np.ones(numWords)	#创建numpy.ones数组,词条出现数初始化为1，拉普拉斯平滑
-    p0Denom = 2.0; p1Denom = 2.0                        	#分母初始化为2,拉普拉斯平滑
+
+
+def trainNB0(trainMatrix, trainCategory):
+    numTrainDocs = len(trainMatrix)  # 计算训练的文档数目
+    numWords = len(trainMatrix[0])  # 计算每篇文档的词条数
+    pAbusive = sum(trainCategory) / float(numTrainDocs)  # 文档属于侮辱类的概率
+    # 创建numpy.ones数组,词条出现数初始化为1，拉普拉斯平滑
+    p0Num = np.ones(numWords)
+    p1Num = np.ones(numWords)
+    p0Denom = 2.0
+    p1Denom = 2.0  # 分母初始化为2,拉普拉斯平滑
     for i in range(numTrainDocs):
-        if trainCategory[i] == 1:							#统计属于侮辱类的条件概率所需的数据，即P(w0|1),P(w1|1),P(w2|1)···
+        if trainCategory[i] == 1:  # 统计属于侮辱类的条件概率所需的数据，即P(w0|1),P(w1|1),P(w2|1)···
             p1Num += trainMatrix[i]
             p1Denom += sum(trainMatrix[i])
-        else:												#统计属于非侮辱类的条件概率所需的数据，即P(w0|0),P(w1|0),P(w2|0)···
+        else:  # 统计属于非侮辱类的条件概率所需的数据，即P(w0|0),P(w1|0),P(w2|0)···
             p0Num += trainMatrix[i]
             p0Denom += sum(trainMatrix[i])
-    p1Vect = np.log(p1Num/p1Denom)							#取对数，防止下溢出          
-    p0Vect = np.log(p0Num/p0Denom)          
-    return p0Vect,p1Vect,pAbusive							#返回属于侮辱类的条件概率数组，属于非侮辱类的条件概率数组，文档属于侮辱类的概率
+    p1Vect = np.log(p1Num / p1Denom)  # 取对数，防止下溢出
+    p0Vect = np.log(p0Num / p0Denom)
+    return p0Vect, p1Vect, pAbusive  # 返回属于侮辱类的条件概率数组，属于非侮辱类的条件概率数组，文档属于侮辱类的概率
 
 """
 函数说明:朴素贝叶斯分类器分类函数
