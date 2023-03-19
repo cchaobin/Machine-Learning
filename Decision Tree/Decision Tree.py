@@ -83,7 +83,7 @@ Blog:
 Modify:
 	2017-07-24
 """
-def splitDataSet(dataSet, axis, value):		
+def splitDataSet(dataSet, axis, value):
 	retDataSet = []										#创建返回的数据集列表
 	for featVec in dataSet: 							#遍历数据集
 		if featVec[axis] == value:
@@ -145,7 +145,7 @@ Modify:
 def majorityCnt(classList):
 	classCount = {}
 	for vote in classList:										#统计classList中每个元素出现的次数
-		if vote not in classCount.keys():classCount[vote] = 0	
+		if vote not in classCount.keys():classCount[vote] = 0
 		classCount[vote] += 1
 	sortedClassCount = sorted(classCount.items(), key = operator.itemgetter(1), reverse = True)		#根据字典的值降序排序
 	return sortedClassCount[0][0]								#返回classList中出现次数最多的元素
@@ -182,7 +182,7 @@ def createTree(dataSet, labels, featLabels):
 	for value in uniqueVals:									#遍历特征，创建决策树。
 		subLabels = labels[:]
 		myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels, featLabels)
-        
+
 	return myTree
 
 """
@@ -253,10 +253,10 @@ Modify:
 """
 def plotNode(nodeTxt, centerPt, parentPt, nodeType):
 	arrow_args = dict(arrowstyle="<-")											#定义箭头格式
-	font = FontProperties(fname=r"c:\windows\fonts\simsunb.ttf", size=14)		#设置中文字体
+	font = FontProperties(fname=r"c:\windows\fonts\simhei.ttf", size=14)		#设置中文字体
 	createPlot.ax1.annotate(nodeTxt, xy=parentPt,  xycoords='axes fraction',	#绘制结点
 		xytext=centerPt, textcoords='axes fraction',
-		va="center", ha="center", bbox=nodeType, arrowprops=arrow_args, FontProperties=font)
+		va="center", ha="center", bbox=nodeType, arrowprops=arrow_args, fontproperties=font)
 
 """
 函数说明:标注有向边属性值
@@ -272,9 +272,9 @@ Blog:
 	http://blog.csdn.net/c406495762
 Modify:
 	2017-07-24
-""" 
+"""
 def plotMidText(cntrPt, parentPt, txtString):
-	xMid = (parentPt[0]-cntrPt[0])/2.0 + cntrPt[0]											#计算标注位置					
+	xMid = (parentPt[0]-cntrPt[0])/2.0 + cntrPt[0]											#计算标注位置
 	yMid = (parentPt[1]-cntrPt[1])/2.0 + cntrPt[1]
 	createPlot.ax1.text(xMid, yMid, txtString, va="center", ha="center", rotation=30)
 
@@ -293,22 +293,22 @@ Blog:
 	http://blog.csdn.net/c406495762
 Modify:
 	2017-07-24
-""" 
+"""
 def plotTree(myTree, parentPt, nodeTxt):
 	decisionNode = dict(boxstyle="sawtooth", fc="0.8")										#设置结点格式
 	leafNode = dict(boxstyle="round4", fc="0.8")											#设置叶结点格式
 	numLeafs = getNumLeafs(myTree)  														#获取决策树叶结点数目，决定了树的宽度
 	depth = getTreeDepth(myTree)															#获取决策树层数
-	firstStr = next(iter(myTree))															#下个字典     											
+	firstStr = next(iter(myTree))															#下个字典
 	cntrPt = (plotTree.xOff + (1.0 + float(numLeafs))/2.0/plotTree.totalW, plotTree.yOff)	#中心位置
 	plotMidText(cntrPt, parentPt, nodeTxt)													#标注有向边属性值
 	plotNode(firstStr, cntrPt, parentPt, decisionNode)										#绘制结点
 	secondDict = myTree[firstStr]															#下一个字典，也就是继续绘制子结点
 	plotTree.yOff = plotTree.yOff - 1.0/plotTree.totalD										#y偏移
-	for key in secondDict.keys():								
+	for key in secondDict.keys():
 		if type(secondDict[key]).__name__=='dict':											#测试该结点是否为字典，如果不是字典，代表此结点为叶子结点
 			plotTree(secondDict[key],cntrPt,str(key))        								#不是叶结点，递归调用继续绘制
-		else:																				#如果是叶结点，绘制叶结点，并标注有向边属性值 											
+		else:																				#如果是叶结点，绘制叶结点，并标注有向边属性值
 			plotTree.xOff = plotTree.xOff + 1.0/plotTree.totalW
 			plotNode(secondDict[key], (plotTree.xOff, plotTree.yOff), cntrPt, leafNode)
 			plotMidText((plotTree.xOff, plotTree.yOff), cntrPt, str(key))
@@ -327,7 +327,7 @@ Blog:
 	http://blog.csdn.net/c406495762
 Modify:
 	2017-07-24
-""" 
+"""
 def createPlot(inTree):
     fig = plt.figure(1, facecolor='white')													#创建fig
     fig.clf()																				#清空fig
@@ -354,11 +354,11 @@ Blog:
 	http://blog.csdn.net/c406495762
 Modify:
 	2017-07-25
-""" 
+"""
 def classify(inputTree, featLabels, testVec):
 	firstStr = next(iter(inputTree))														#获取决策树结点
 	secondDict = inputTree[firstStr]														#下一个字典
-	featIndex = featLabels.index(firstStr)												
+	featIndex = featLabels.index(firstStr)
 	for key in secondDict.keys():
 		if testVec[featIndex] == key:
 			if type(secondDict[key]).__name__ == 'dict':
@@ -380,7 +380,7 @@ Blog:
 	http://blog.csdn.net/c406495762
 Modify:
 	2017-07-25
-""" 
+"""
 def storeTree(inputTree, filename):
 	with open(filename, 'wb') as fw:
 		pickle.dump(inputTree, fw)
@@ -398,7 +398,7 @@ Blog:
 	http://blog.csdn.net/c406495762
 Modify:
 	2017-07-25
-""" 
+"""
 def grabTree(filename):
 	fr = open(filename, 'rb')
 	return pickle.load(fr)
